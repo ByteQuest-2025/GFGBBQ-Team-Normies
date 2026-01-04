@@ -16,7 +16,8 @@ export default function Header() {
       <div className="hidden md:flex gap-10 text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
         <a href="/" className="hover:text-white transition">Home</a>
         <a href="/docs" className="hover:text-white transition">Docs</a>
-        <a href="#" className="hover:text-white transition">Governance</a>
+        <a href="/signup" className="hover:text-white transition">Signup</a>
+        <a href="/login" className="hover:text-white transition">login</a>
       </div>
 
       <ConnectButton />

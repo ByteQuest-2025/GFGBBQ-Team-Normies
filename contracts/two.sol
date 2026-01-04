@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// Interface to interact with your first contract
+// Interface to interact with Master Token
 interface IMusicNFT {
     function getLatestEthPrice() external view returns (uint256);
     function ownerOf(uint256 tokenId) external view returns (address);
@@ -38,7 +38,7 @@ contract UsageRightsNFT is ERC721URIStorage, Ownable {
         UsageType usageType, 
         string memory lighthouseURI
     ) public payable returns (uint256) {
-        // 1. Calculate price in ETH using the Master contract's price feed
+        // 1. Calculate price in ETH 
         uint256 requiredUsd = (usageType == UsageType.Normal) ? NORMAL_FEE_USD : ENTERPRISE_FEE_USD;
         uint256 ethPrice = masterContract.getLatestEthPrice();
         uint256 requiredEth = (requiredUsd * 1e18) / ethPrice;

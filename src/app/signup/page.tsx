@@ -7,12 +7,17 @@ export default function Login(){
     console.log(isConnected)
     return (
         <div>
+
+        
+        <Header/>
+        <div>
             {isConnected? (
-                <div>connected</div>
+                <div className="flex justify-center align-middle"> <SignupForm /></div>
             )
             :(
-                <div className="flex justify-center align-middle"> <SignupForm /></div>
+                <div className="flex justify-center align-middle">Please Connect Your Wallet Connect Wallet</div>
             )}
+        </div>
         </div>
     )
 }
