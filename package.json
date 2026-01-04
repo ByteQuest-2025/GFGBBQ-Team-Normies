@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@lighthouse-web3/sdk": "^0.4.3",
     "@metamask/sdk": "^0.34.0",
     "@rainbow-me/rainbowkit": "^2.2.10",
     "@tanstack/react-query": "^5.90.16",

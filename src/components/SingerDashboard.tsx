@@ -2,15 +2,27 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {  useConnection, useWriteContract } from 'wagmi';
-import { abi1,address1 } from '@/config/config';
+import { useConnection, useWriteContract, useReadContract } from 'wagmi';
+import { formatEther } from 'viem';
+import { abi1, address1 } from '@/config/config';
+
 export default function SingerDashboard() {
+    // 1. useAccount remains the standard for v3
     const { address } = useConnection();
-    const { writeContractAsync } = useWriteContract();
+    
+    // 2. Destructure exactly 'writeContractAsync' from the hook
+    const { writeContractAsync, isPending: isMinting } = useWriteContract();
     
     const [mySongs, setMySongs] = useState([]);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({ artist: '', song: '', audio: '' });
+
+    // 3. Fetch current fee (v3 removed the 'watch' property from hooks)
+    const { data: mintFee } = useReadContract({
+        abi: abi1,
+        address: address1 as `0x${string}`,
+        functionName: 'getMintFeeInEth',
+    });
 
     useEffect(() => {
         if (address) fetchMySongs();
@@ -25,34 +37,41 @@ export default function SingerDashboard() {
 
     const handleMintAndPublish = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!address || loading) return;
+        if (!address || loading || !mintFee) return;
 
         try {
             setLoading(true);
 
-            // 1. Get Lighthouse URI
+            // STEP 1: IPFS Upload via your API
             const uriRes = await axios.post('/api/songs', {
                 ...formData, signerAddress: address, action: "getUri"
             });
             const metadataUri = uriRes.data.uri;
 
-            // 2. Mint on Smart Contract
-            const tx = await writeContractAsync({
+            // STEP 2: Wagmi v3 Contract Write
+            // Ensure address1 is cast as `0x${string}` for TypeScript 5.7+
+            const hash = await writeContractAsync({
                 abi: abi1,
-                address: address1,
-                functionName: 'mintMasterToken',
-                args: [address, metadataUri],
+                address: address1 as `0x${string}`,
+                functionName: 'mintSong',
+                args: [metadataUri],
+                value: BigInt(mintFee.toString()),
             });
 
-            // 3. Save to MongoDB
+            // STEP 3: MongoDB Save
             await axios.post('/api/songs', {
-                ...formData, lighthouseUri: metadataUri, txHash: tx, signerAddress: address, action: "save"
+                ...formData, 
+                lighthouseUri: metadataUri, 
+                mintTxHash: hash, 
+                signerAddress: address, 
+                action: "save"
             });
 
-            alert("Master Token Minted!");
-            fetchMySongs(); // Refresh list
+            alert("Mint Successful!");
+            fetchMySongs();
         } catch (err: any) {
-            alert(err.message);
+            console.error(err);
+            alert(err.shortMessage || err.message || "Transaction failed");
         } finally {
             setLoading(false);
         }
@@ -60,42 +79,40 @@ export default function SingerDashboard() {
 
     return (
         <div className="p-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* LEFT: MINTING SECTION */}
             <section className="bg-zinc-900/50 p-8 rounded-[2.5rem] border border-white/5 shadow-2xl">
-                <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-6 text-green-500">Initialize Master</h2>
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-black italic uppercase tracking-tighter text-green-500">Artist Portal</h2>
+                    {typeof mintFee === 'bigint' && (
+    <span className="text-xs font-bold text-zinc-400">
+        Fee: {formatEther(mintFee)} ETH
+    </span>
+)}
+                </div>
                 <form onSubmit={handleMintAndPublish} className="space-y-4">
-                    <input placeholder="Artist Name" className="w-full bg-black border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-green-500" 
+                    <input placeholder="Artist" className="w-full bg-black border border-white/10 p-4 rounded-xl text-white outline-none focus:border-green-500" 
                         onChange={e => setFormData({...formData, artist: e.target.value})} required />
-                    <input placeholder="Song Name" className="w-full bg-black border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-green-500" 
+                    <input placeholder="Song Title" className="w-full bg-black border border-white/10 p-4 rounded-xl text-white outline-none focus:border-green-500" 
                         onChange={e => setFormData({...formData, song: e.target.value})} required />
-                    <input placeholder="Audio URL (IPFS/Cloud)" className="w-full bg-black border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-green-500" 
+                    <input placeholder="Audio URL" className="w-full bg-black border border-white/10 p-4 rounded-xl text-white outline-none focus:border-green-500" 
                         onChange={e => setFormData({...formData, audio: e.target.value})} required />
-                    <button disabled={loading} className="w-full bg-white text-black py-5 rounded-full font-black uppercase tracking-widest hover:bg-green-500 transition-all">
-                        {loading ? "Processing..." : "Mint & Publish"}
+                    <button disabled={loading || isMinting} className="w-full bg-white text-black py-4 rounded-full font-black uppercase hover:bg-green-500 transition-all">
+                        {loading || isMinting ? "Minting..." : "Mint Music NFT"}
                     </button>
                 </form>
             </section>
 
-            {/* RIGHT: PUBLISHED SONGS LIST */}
-            <section>
-                <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-6 text-zinc-400">Your Catalog</h2>
-                <div className="space-y-4 overflow-y-auto max-h-[600px] pr-2">
-                    {mySongs.length === 0 ? (
-                        <p className="text-zinc-600 italic">No assets published yet.</p>
-                    ) : (
-                        mySongs.map((song: any) => (
-                            <div key={song._id} className="bg-zinc-900 border border-white/5 p-6 rounded-3xl flex justify-between items-center group hover:border-green-500/30 transition-all">
-                                <div>
-                                    <h3 className="font-bold text-white text-lg">{song.songName}</h3>
-                                    <p className="text-xs text-zinc-500 uppercase font-bold tracking-widest">{song.artistName}</p>
-                                </div>
-                                <div className="text-right">
-                                    <a href={song.lighthouseUri} target="_blank" className="text-[10px] text-green-500 font-mono hover:underline">VIEW METADATA</a>
-                                    <p className="text-[9px] text-zinc-700 mt-1 uppercase">TX: {song.mintTxHash.substring(0, 10)}...</p>
-                                </div>
+            <section className="bg-zinc-900/20 p-8 rounded-[2.5rem] border border-white/5">
+                <h2 className="text-2xl font-black uppercase tracking-tighter mb-6 text-zinc-500">Your Catalog</h2>
+                <div className="space-y-3">
+                    {mySongs.map((song: any) => (
+                        <div key={song._id} className="bg-black/40 p-4 rounded-2xl border border-white/5 flex justify-between items-center">
+                            <div>
+                                <h3 className="font-bold">{song.songName}</h3>
+                                <p className="text-[10px] text-zinc-500 uppercase">{song.artistName}</p>
                             </div>
-                        ))
-                    )}
+                            <p className="text-[9px] font-mono text-zinc-700">TX: {song.mintTxHash?.slice(0, 10)}...</p>
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>

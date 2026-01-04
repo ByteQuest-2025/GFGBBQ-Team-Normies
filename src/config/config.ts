@@ -10,7 +10,7 @@ const WagmiConfig = createConfig({
   },
 })
 
-const address1:Address= "0xBDDe05d3E05F87Fc6c92A1fd47dA0e479cB25D7C"
+const address1:Address= "0x946d12D642abc9f8a13659C9A1C786cB05d701C6"
 const abi1:Abi = [
 	{
 		"inputs": [

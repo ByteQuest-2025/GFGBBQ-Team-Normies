@@ -20,7 +20,7 @@ export default function HomePage() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          
+          <a className="rounded-xl bg-amber-50 text-black p-4" href="/dashboard"> Get Started</a>
         </div>
       </header>
 
