@@ -661,11 +661,247 @@ const abi1:Abi = [
 	}
 ]
 
-const address2:Address= "0xBDDe05d3E05F87Fc6c92A1fd47dA0e479cB25D7C"
-const abi2:Abi = []
+const address2:Address= "0x632eE7BFa718D1f1c33212201b9EbE5d4269D6E0"
+const abi2:Abi = [
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_masterContract",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
 
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "buyer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "songId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "usageType",
+        "type": "uint8"
+      }
+    ],
+    "name": "UsageRightMinted",
+    "type": "event"
+  },
 
-// ...
+  {
+    "inputs": [],
+    "name": "ENTERPRISE_FEE_USD",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [],
+    "name": "NORMAL_FEE_USD",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "songId",
+        "type": "uint256"
+      }
+    ],
+    "name": "checkLicense",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "bought",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint8",
+        "name": "uType",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "songId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "usageType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "lighthouseURI",
+        "type": "string"
+      }
+    ],
+    "name": "mintUsageRight",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "rightToSongId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "hasBought",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "purchasedType",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [],
+    "name": "masterContract",
+    "outputs": [
+      {
+        "internalType": "contract IMusicNFT",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
+
 export{
     abi1,
     address1,
