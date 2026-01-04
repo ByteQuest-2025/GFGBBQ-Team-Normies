@@ -1,3 +1,48 @@
+# Problem Statement
+Traditional music platforms suffer from opaque royalty distributions and a lack of verifiable ownership for licensing. Artists often lose a significant portion of their earnings to intermediaries, while listeners have no clear on-chain proof of their usage rights, whether for personal or commercial purposes.
+
+# Project Name
+**Zeno**
+
+# Team Name
+NORMIES
+
+# Deployed Link (optional)
+
+# 2-minute Demonstration Video link
+NA
+
+# PPT Link
+(https://drive.google.com/file/d/17nn5OJRdAKIgS9fbyRkQ6hntZhnjxn5j/view?usp=sharing)
+
+---
+
+## 🎵 Project Overview
+**Zeno** is a decentralized royalty and music licensing platform designed to bridge the gap between creators and consumers. Built on a dual-contract architecture, Zeno allows artists to mint Master NFTs for their tracks while enabling a separate licensing market. Listeners can purchase specific, verifiable usage rights (Standard or Enterprise) powered by real-time Chainlink price feeds.
+
+### Key Features:
+* **Artist Portal**: Musicians can mint their tracks as NFTs, with assets and metadata stored securely on IPFS via Lighthouse.
+* **Tiered Licensing Market**: A marketplace where users can buy "Standard" or "Enterprise" usage rights using ETH, with costs pegged to USD ($1/$20) via live oracles.
+* **Transparent Royalties**: Smart contracts ensure that payments go directly to the artist, eliminating the need for centralized distributors.
+* **User Library**: A dedicated personal collection view where users can track their owned licenses and download high-quality audio tracks.
+
+## 🛠 Setup and Installation
+
+### Prerequisites
+* **Node.js**: v18.x or higher
+* **MetaMask**: Or any EIP-1193 compatible wallet
+* **Environment**: MongoDB instance for off-chain metadata caching
+
+### Installation Steps
+
+1. **Clone the Project**
+   ```bash
+   git clone [https://github.com/](https://github.com/)[your-username]/zeno.git
+   cd zeno
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
