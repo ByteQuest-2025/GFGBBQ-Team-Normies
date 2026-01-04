@@ -10,7 +10,7 @@ export default function SignupForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState<'Singer' | 'Listener' | null>(null);
+  const [role, setRole] = useState('Singer') ;
   const [loading, setLoading] = useState(false);
 
   const isConnected = status === 'connected';
