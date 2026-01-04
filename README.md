@@ -13,7 +13,7 @@ NORMIES
 https://drive.google.com/drive/folders/1v1TafbR7BPJc3L5F4V_opcWZyQxdQ5_-?usp=sharing
 
 # PPT Link
-(https://drive.google.com/file/d/17nn5OJRdAKIgS9fbyRkQ6hntZhnjxn5j/view?usp=sharing)
+https://drive.google.com/drive/folders/1v1TafbR7BPJc3L5F4V_opcWZyQxdQ5_-?usp=sharing
 
 ---
 
